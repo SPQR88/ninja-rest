@@ -269,51 +269,6 @@ namespace App {
         }
 
         /**
-         * View (Volt)
-         *
-         * @return \App\Bootstrap
-         */
-        protected function initializeView()
-        {
-            $di = $this->di;
-            $di->setShared("view", function () use ($di) {
-                $view = new \Phalcon\Mvc\View();
-                $viewDirectory = \App\Util::arrayToPath([
-                    \App::$rootDir,
-                    "application",
-                    $di->getResolver()->id,
-                    "template"
-                ], true, false);
-                $viewCompiledDirectory = \App\Util::arrayToPath([
-                    \App::$rootDir,
-                    "application",
-                    $di->getResolver()->id,
-                    "template",
-                    "compiled"
-                ], true, false);
-
-                $view->setViewsDir($viewDirectory);
-                $view->registerEngines([
-                        '.volt' => function ($view, $di) use ($viewCompiledDirectory) {
-                                $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
-                                $volt->setOptions([
-                                    'compiledPath' => $viewCompiledDirectory,
-                                    'stat' => true,
-                                    'compileAlways' => true
-                                ]);
-
-                                return $volt;
-                            }
-                    ]
-                );
-
-                return $view;
-            });
-
-            return $this;
-        }
-
-        /**
          * Routing
          *
          * @return \App\Bootstrap
