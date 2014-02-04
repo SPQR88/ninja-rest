@@ -16,7 +16,7 @@ namespace App\Module {
         /**
          * Регистрация дополнительных классов
          */
-        public function registerAutoloaders()
+        public function registerAutoloaders($diInterface)
         {
 
         }
@@ -34,50 +34,7 @@ namespace App\Module {
                     "Controller"
                 ]));
 
-                //print $di->getRouter()->getModules();
-
                 return $dispatcher;
-            });
-
-            $di->set('view', function () use ($di) {
-                $viewDirectory = \App\Util::arrayToPath([
-                    \App::$rootDir,
-                    "application",
-                    $di->getResolver()->id,
-                    "template",
-                    "Module",
-                    \ucfirst($di->getShared('router')->getModuleName())
-                ], true, false);
-
-                $viewCompiledDirectory = \App\Util::arrayToPath(
-                    [
-                        \App::$rootDir,
-                        "tmp",
-                        "cache",
-                        "template",
-                    ],
-                    true,
-                    false
-                );
-
-                $view = new \Phalcon\Mvc\View();
-                $view->setViewsDir($viewDirectory);
-                $view->registerEngines(
-                    [
-                        '.volt' => function ($view, $di) use ($viewCompiledDirectory) {
-                                $volt = new \Phalcon\Mvc\View\Engine\Volt($view, $di);
-                                $volt->setOptions([
-                                    'compiledPath' => $viewCompiledDirectory,
-                                    'stat' => true,
-                                    'compileAlways' => true
-                                ]);
-
-                                return $volt;
-                            }
-                    ]
-                );
-
-                return $view;
             });
         }
     }
