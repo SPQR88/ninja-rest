@@ -128,7 +128,7 @@ namespace App {
         protected function initializeDatabase()
         {
             $di = $this->di;
-            $this->di->setShared("database", function () use ($di) {
+            $this->di->set("db", function () use ($di) {
                 $config = $di->getConfiguration()->toArray();
                 if (\array_key_exists('database', $config)) {
                     $config = $config['database'];

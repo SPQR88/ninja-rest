@@ -7,6 +7,10 @@
 
 namespace App\Model
 {
+    /**
+     * Class Base
+     * @package App\Model
+     */
     class Base extends \Phalcon\Mvc\Model
     {
         public function getConnectionService()
