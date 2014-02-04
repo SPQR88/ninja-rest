@@ -50,5 +50,9 @@ namespace Module\User\Controller
 
             return [];
         }
+
+        public function noJsonAction()
+        {
+        }
     }
 }

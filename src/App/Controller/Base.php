@@ -44,10 +44,6 @@ namespace App\Controller {
          */
         public function beforeExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
         {
-            if ($dispatcher->getDI()->getConfiguration()->application->name) {
-                $this->response->setHeader('Server', $dispatcher->getDI()->getConfiguration()->application->name);
-            }
-
             if ($this->request->isOptions()) {
                 $this->response->setHeader('Access-Control-Allow-Origin', "*");
                 $this->response->setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
@@ -110,6 +106,10 @@ namespace App\Controller {
                 );
             }
 
+            if ($dispatcher->getDI()->getConfiguration()->application->name) {
+                $httpResponse->setHeader('Server', $dispatcher->getDI()->getConfiguration()->application->name);
+            }
+
             $httpResponse->setExpires($expireDate);
             $httpResponse->setContentType($this->contentType);
             $httpResponse->setContent($returnedValueFromAction);
@@ -131,5 +131,6 @@ namespace App\Controller {
         {
             $this->dispatcher->setParam("status", [503, "Temporary unavailable"]);
         }
+
     }
 }
