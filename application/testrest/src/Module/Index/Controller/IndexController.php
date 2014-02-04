@@ -7,7 +7,7 @@
 
 namespace Module\Index\Controller
 {
-    class IndexController extends \App\Controller\RestController
+    class IndexController extends \App\Controller\Base
     {
         /**
          * @Access("public")

@@ -11,7 +11,7 @@ namespace Module\User\Controller
      * Class IndexController
      * @package Module\User\Controller
      */
-    class IndexController extends \App\Controller\RestController
+    class IndexController extends \App\Controller\Base
     {
         /**
          * @Access("public")
