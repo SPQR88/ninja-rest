@@ -5,9 +5,14 @@
  * Time: 11:47
  */
 
+/**
+ * Class App
+ */
 class App
 {
     /**
+     * \App\Bootstrap
+     *
      * @var mixed
      */
     protected $bootstrap;
@@ -34,7 +39,7 @@ class App
 
     public $loader;
     /**
-     * Конструктор
+     * Constructor
      */
     public function __construct($loader)
     {
@@ -45,15 +50,13 @@ class App
     }
 
     /**
-     * Инициализация приложения
+     * DI initializing
      *
      * @param $resolve
      * @return \App
      */
     public function initialize($resolve)
     {
-        //$appNs =  \ucfirst($resolve->id) . '\\';
-
         $this->loader->add("", \App\Util::arrayToPath([
                 \App::$rootDir,
                 "application",
@@ -83,21 +86,8 @@ class App
         return $this;
     }
 
-    public function initializeConsole($resolve)
-    {
-        $this->bootstrap = new \App\BootstrapConsole($resolve);
-    }
-
     /**
-     * Инициализация Cli приложения
-     */
-    public function cli()
-    {
-        print_r($_SERVER['argv']);
-    }
-
-    /**
-     * Инициализация Www приложения
+     * Application initialize
      */
     public function application()
     {
@@ -106,22 +96,18 @@ class App
 
             if (null !== $resolve->host && null !== $resolve->id) {
                 $this->initialize($resolve);
-
                 $this->application = new \Phalcon\Mvc\Application($this->bootstrap->di);
                 $this->registerModules();
                 
                 print $this->application->handle()->getContent();
             }
-
         } catch (\Exception $e) {
-            $httpResponse = $this->bootstrap->di->getResponse();
-            $httpResponse->redirect("/");
             $this->bootstrap->di->getLogger()->error($e->getMessage());
         }
     }
 
     /**
-     * Регистрация модулей в приложении
+     * Register modules
      *
      * @return void
      */
@@ -149,15 +135,7 @@ class App
     }
 
     /**
-     *
-     */
-    public function micro()
-    {
-
-    }
-
-    /**
-     * Устанавливает корневую директорию
+     * Set root directory
      *
      * @return \App
      */
@@ -170,7 +148,7 @@ class App
 
 
     /**
-     * Обработчик ошибок (запись в лог)
+     * @TODO
      *
      * @return \App
      */
@@ -180,7 +158,7 @@ class App
     }
 
     /**
-     * Обработчик исключений (запись в лог)
+     * @TODO
      *
      * @return \App
      */
@@ -190,7 +168,8 @@ class App
     }
 
     /**
-     *
+     * Resolving host to application names
+     * @TODO DNS TXT entry query
      */
     protected function resolveHostToApplication()
     {
