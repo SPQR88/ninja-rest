@@ -68,7 +68,7 @@ namespace App\Controller {
             $expireDate = new \DateTime();
             $expireDate->modify('-10 minutes');
 
-            if ((int)$dispatcher->getParam('status') > 0) {
+            if ((int)$dispatcher->getParam('status')[0] > 0 && \strlen((string)$dispatcher->getParam('status')[1]) > 0) {
                 $httpResponse->setStatusCode(
                     (int)$dispatcher->getParam('status')[0],
                     (string)$dispatcher->getParam('status')[1]
