@@ -1,0 +1,27 @@
+{
+    "module": {
+        "settings": {
+            "namespace": [
+                "Module"
+            ],
+            "className": "Module"
+        },
+        "modules": [
+            "index"
+        ]
+    },
+    "route": {
+        "index": {
+            "prefix": "/",
+            "host": "rest.devnet.kz",
+            "rules": [
+                {
+                    "rule": "",
+                    "method": "get",
+                    "action": "index",
+                    "controller": "index"
+                }
+            ]
+        }
+    }
+}

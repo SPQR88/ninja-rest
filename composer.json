@@ -1,0 +1,27 @@
+{
+    "name": "ninja/rest",
+    "description": "ninja",
+    "homepage": "http://rest.ninja.kz/",
+    "version": "0.0",
+    "authors": [
+        {
+            "name": "Yerlen Zhubangaliyev",
+            "email": "yz@yz.kz",
+            "homepage": "http://yz.kz/",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "yz@yz.kz",
+        "issues": "http://yz.kz/support"
+    },
+    "autoload": {
+        "psr-0": {
+            "": ["src/"]
+        }
+    },
+    "require": {
+        "php": ">=5.5.6",
+        "phalcon/devtools": "dev-master"
+    }
+}
