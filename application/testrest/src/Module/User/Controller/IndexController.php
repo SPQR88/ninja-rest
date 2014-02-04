@@ -41,7 +41,14 @@ namespace Module\User\Controller
         {
             $user = Model\User::findFirst($id);
 
-            return ['userName' => $user->name];
+            return ['userName' => $user->name, 'userEmail' => $user->email];
+        }
+
+        public function httpCodeAction()
+        {
+            $this->dispatcher->setParam('status', [404, "not found"]);
+
+            return [];
         }
     }
 }
