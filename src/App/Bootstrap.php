@@ -29,10 +29,13 @@ namespace App {
          */
         protected $defaultModule, $defaultAction = "index";
 
-        protected $defaultController = 'home';
+        /**
+         * @var string
+         */
+        protected $defaultController = 'index';
 
         /**
-         * Конструктор
+         * Constructor
          */
         public function __construct($resolve)
         {
@@ -44,7 +47,7 @@ namespace App {
         }
 
         /**
-         * Получение префикса для вызываемых методов
+         * Methods prefix getter
          *
          * @param $key
          * @return \App\Bootstrap
@@ -57,7 +60,7 @@ namespace App {
         }
 
         /**
-         * Магический метод для инициализации компонентов
+         * Register services
          * $bootstrap->initialize->configuration()->database();
          *
          * @param $method
@@ -87,7 +90,7 @@ namespace App {
         }
 
         /**
-         * Инициализация конфигурации
+         * Config
          *
          * @return \App\Bootstrap
          */
@@ -118,7 +121,7 @@ namespace App {
         }
 
         /**
-         * Инициализация Базы данных
+         * Db
          *
          * @return \App\Bootstrap
          */
@@ -140,7 +143,7 @@ namespace App {
         }
 
         /**
-         * Инициализация сессии
+         * Session
          *
          * @return \App\Bootstrap
          */
@@ -159,7 +162,7 @@ namespace App {
         }
 
         /**
-         * Инициализация Http Request
+         * Http Request
          *
          * @return \App\Bootstrap
          */
@@ -173,7 +176,7 @@ namespace App {
         }
 
         /**
-         * Инициализация Http Response
+         * Http Response
          *
          * @return \App\Bootstrap
          */
@@ -187,6 +190,8 @@ namespace App {
         }
 
         /**
+         * Cookie
+         *
          * @return \App\Bootstrap
          */
         protected function initializeCookie()
@@ -198,6 +203,11 @@ namespace App {
             return $this;
         }
 
+        /**
+         * Cache
+         *
+         * @return $this
+         */
         public function initializeCache()
         {
             $this->di->setShared("cache", function () {
@@ -208,7 +218,7 @@ namespace App {
         }
 
         /**
-         * Инициализация журнала
+         * Logger
          *
          * @return \App\Bootstrap
          */
@@ -231,7 +241,7 @@ namespace App {
         }
 
         /**
-         * Инициализация View (Volt)
+         * View (template service) (Volt)
          *
          * @return \App\Bootstrap
          */
@@ -258,13 +268,8 @@ namespace App {
             return $this;
         }
 
-        protected function serviceVolt()
-        {
-
-        }
-
         /**
-         * Инициализация View (Volt)
+         * View (Volt)
          *
          * @return \App\Bootstrap
          */
@@ -309,7 +314,7 @@ namespace App {
         }
 
         /**
-         * Инициализация конфигурации роутинга
+         * Routing
          *
          * @return \App\Bootstrap
          */
@@ -332,7 +337,7 @@ namespace App {
         }
 
         /**
-         * Инициализация роутера
+         * Router
          *
          * @return \App\Bootstrap
          */
@@ -353,8 +358,6 @@ namespace App {
 
                 if ($route) {
                     if ($route->count() > 0) {
-                        //$router->setDefaultModule($route->toArray()['module']['modules'][0]);
-
 
                         foreach ($route->toArray()['route'] as $moduleName => $moduleObject) {
                             $routerGroupOptions = [
@@ -372,12 +375,6 @@ namespace App {
 
                                 if (\array_key_exists('host', $moduleObject)) {
                                     $routerGroup->setHostName($moduleObject['host']);
-
-//                                    if (\array_key_exists('host', $route->toArray())) {
-//                                        if (\array_key_exists('defaultModule', $route->toArray()['host'])) {
-//                                            $router->setDefaultModule($route->toArray()['host']['defaultModule'][$moduleObject['host']]);
-//                                        }
-//                                    }
                                 }
 
                                 foreach ($moduleObject['rules'] as $ruleObject) {
@@ -420,14 +417,6 @@ namespace App {
                                     } else {
                                         $routerGroup->$methodName($ruleObject['rule'], $routeParams);
                                     }
-
-//                                    if (\array_key_exists('host', $routeParams)) {
-//                                        if ($di->getResolver()->host == $routeParams['host']) {
-//                                            $routerGroup->$methodName($ruleObject['rule'], $routeParams)->setHostName($routeParams['host']);
-//                                        }
-//                                    } else {
-//
-//                                    }
                                 }
                             }
 
@@ -445,7 +434,9 @@ namespace App {
         }
 
         /**
+         * Event manager
          *
+         * @return $this
          */
         protected function initializeEventsManager()
         {
@@ -455,10 +446,14 @@ namespace App {
 
                 return $eventsManger;
             });
+
+            return $this;
         }
 
         /**
+         * Dispatcher
          *
+         * @return $this
          */
         protected function initializeDispatcher()
         {
@@ -467,65 +462,14 @@ namespace App {
                 try {
                     $dispatcher = new \Phalcon\Mvc\Dispatcher();
                     $eventsManager = $di->getEventsManager();
-                    //$modules = $di->application->getModules();
-//                    $eventsManager->attach("dispatch:beforeForward", function ($event, $dispatcher, array $forward) {
-//                        if(isset($forward['module'])){
-//
-//                            // Check whether the module is registered
-//                            if(!isset($modules[ $forward['module'] ])){
-//                                throw new \Phalcon\Mvc\Dispatcher\Exception('Module ' . $forward['module'] . ' does not exist.');
-//                            }
-//
-//                            // Check whether module contains meta data
-//                            $moduleData = $modules[ $forward['module'] ];
-//                            if(!isset($moduleData['metadata']) || !isset($moduleData['metadata']['controllersNamespace'])){
-//                                // @todo think of something nice to automatically get controller dir from existing config?
-//                                throw new \Phalcon\Mvc\Dispatcher\Exception('Module ' . $forward['module'] . ' does not have meta data. Controller namespace must be specified.');
-//                            }
-//
-//                            // Set controller namespace
-//                            $metadata = $moduleData['metadata'];
-//                            $dispatcher->setNamespaceName($metadata['controllersNamespace']);
-//
-//                            // Set controller suffix
-//                            if(isset($metadata['controllerSuffix'])){
-//                                $dispatcher->setControllerSuffix($metadata['controllerSuffix']);
-//                            }
-//
-//                            // Set action suffix
-//                            if(isset($metadata['actionSuffix'])){
-//                                $dispatcher->setActionSuffix($metadata['actionSuffix']);
-//                            }
-//                        }
-//                    });
 
                     $eventsManager->attach("dispatch:beforeException", function ($event, $dispatcher, $exception) {
-
-                        //Handle 404 exceptions
-//                    if ($exception instanceof DispatchException) {
-//                        $dispatcher->forward(array(
-//                            'module' => 'index',
-//                            'controller' => 'index',
-//                            'action' => 'index'
-//                        ));
-//                        return false;
-//                    }
-//
-//                    //Handle other exceptions
-//                    $dispatcher->forward(array(
-//                        'module' => 'index',
-//                        'controller' => 'index',
-//                        'action' => 'index'
-//                    ));
-//                    print $dispatcher->getModuleName();
-
                         return false;
                     });
                     $dispatcher->setEventsManager($eventsManager);
 
                     return $dispatcher;
                 } catch (\Exception $e) {
-                    print 'a';
                     print $e->getMessage();
                 }
             });
