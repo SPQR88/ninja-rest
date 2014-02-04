@@ -1,1 +1,3 @@
-ninja-rest
+### ninja-rest
+
+    demo: http://rest.devnet.kz
