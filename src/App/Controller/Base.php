@@ -40,6 +40,10 @@ namespace App\Controller {
          */
         public function beforeExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
         {
+            if ($dispatcher->getDI()->getConfiguration()->application->name) {
+                $this->response->setHeader('Server', $dispatcher->getDI()->getConfiguration()->application->name);
+            }
+
             if ($this->request->isOptions()) {
                 $this->response->setHeader('Access-Control-Allow-Origin', "*");
                 $this->response->setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
@@ -51,6 +55,33 @@ namespace App\Controller {
             }
 
             $this->response->setHeader('Access-Control-Allow-Origin', "*");
+
+            $annotations = $this->annotations->getMethod(
+                $dispatcher->getActiveController(),
+                $dispatcher->getActiveMethod()
+            );
+
+            if ($annotations->has('Access')) {
+                $annotation = $annotations->get('Access');
+
+                if ($annotation->getNamedArgument(0) == 'private') {
+                    $headers = $this->request->getHeaders();
+
+                    $dispatcher->forward([
+                        'action' => 'unauthorized'
+                    ]);
+                }
+            }
+
+            if ($annotations->has('Offline')) {
+                $offline = $annotations->get('Offline');
+
+                if ((int)$offline->getNamedArgument(0) === 1) {
+                    $dispatcher->forward([
+                        'action' => 'offline'
+                    ]);
+                }
+            }
         }
 
         /**
@@ -79,6 +110,16 @@ namespace App\Controller {
             $httpResponse->setContentType($this->contentType);
             $httpResponse->setContent($returnedValueFromAction);
             $httpResponse->send();
+        }
+
+        public function unauthorizedAction()
+        {
+            $this->dispatcher->setParam("status", [401, "Login first"]);
+        }
+
+        public function offlineAction()
+        {
+            $this->dispatcher->setParam("status", [503, "Temporary unavailable"]);
         }
     }
 }

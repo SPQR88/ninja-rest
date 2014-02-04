@@ -19,13 +19,29 @@ namespace Module\Index\Controller
         }
 
         /**
-         * @Access("public")
          * @param $id
          * @return array
          */
         public function testAction($id)
         {
             return ["test-id" => $id];
+        }
+
+        /**
+         * @Offline(1)
+         * @return array
+         */
+        public function offAction()
+        {
+
+        }
+
+        /**
+         * @Access("private")
+         */
+        public function privateAction()
+        {
+            return [];
         }
     }
 }
