@@ -31,5 +31,16 @@ namespace Module\User\Controller
         {
             return ["test-id" => $id];
         }
+
+        /**
+         * @param $id
+         * @return array
+         */
+        public function getAction($id)
+        {
+            $user = \Module\User\Model\User::findFirst($id);
+
+            return ['userName' => $user->name];
+        }
     }
 }

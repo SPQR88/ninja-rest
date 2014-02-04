@@ -5,15 +5,16 @@
  * Time: 12:21
  */
 
-namespace Module\Index\Model
+namespace Module\User\Model
 {
+
     /**
      * Class User
-     * @package Module\Index\Model
+     * @package Module\User\Model
      */
     class User extends \App\Model\Base
     {
-    
+
     }
 }
 
