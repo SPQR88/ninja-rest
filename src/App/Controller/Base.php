@@ -8,20 +8,21 @@
 namespace App\Controller {
 
     /**
-     * Базовый класс для Rest контроллеров
+     * Base controller
      *
      * @package App\Controller
      */
-    class RestController extends \Phalcon\DI\Injectable
+    class Base extends \Phalcon\DI\Injectable
     {
         /**
-         * MIME Тип документа
+         * MIME type
+         *
          * @var string
          */
         protected $contentType = 'application/json';
 
         /**
-         * Конструктор
+         * Constructor
          */
         public function __construct()
         {
@@ -39,22 +40,17 @@ namespace App\Controller {
          */
         public function beforeExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
         {
-
-
             if ($this->request->isOptions()) {
-
                 $this->response->setHeader('Access-Control-Allow-Origin', "*");
                 $this->response->setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
                 $this->response->setHeader('Access-Control-Allow-Headers', "Accept, Accept-Encoding, Accept-Language, Referrer, Host, X-Auth-Token, X-Auth-Request-Token, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type");
                 $this->response->setHeader('Access-Control-Allow-Headers', "x-requested-with, accept, accept-language, x-auth-token, x-auth-request-token, user-agent, content-type, if-modified-since, origin, host, accept-encoding, connection");
                 //$this->response->setHeader('Access-Control-Max-Age', 1728000);
                 $this->response->setHeader('Access-Control-Allow-Credentials', "true");
-
                 $this->response->send();
             }
 
             $this->response->setHeader('Access-Control-Allow-Origin', "*");
-
         }
 
         /**
