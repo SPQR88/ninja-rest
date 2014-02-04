@@ -30,6 +30,10 @@ namespace App\Controller {
             $this->view->setRenderLevel(\Phalcon\Mvc\View::LEVEL_NO_RENDER);
         }
 
+        /**
+         * @param \Phalcon\Events\Event $event
+         * @param \Phalcon\Mvc\Dispatcher $dispatcher
+         */
         public function beforeDispatch(\Phalcon\Events\Event $event, \Phalcon\Mvc\Dispatcher $dispatcher)
         {
 
@@ -112,11 +116,17 @@ namespace App\Controller {
             $httpResponse->send();
         }
 
+        /**
+         *
+         */
         public function unauthorizedAction()
         {
             $this->dispatcher->setParam("status", [401, "Login first"]);
         }
 
+        /**
+         *
+         */
         public function offlineAction()
         {
             $this->dispatcher->setParam("status", [503, "Temporary unavailable"]);
