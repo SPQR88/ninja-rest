@@ -7,6 +7,7 @@
 
 namespace Module\User\Controller
 {
+    use \Module\User\Model;
     /**
      * Class IndexController
      * @package Module\User\Controller
@@ -38,7 +39,7 @@ namespace Module\User\Controller
          */
         public function getAction($id)
         {
-            $user = \Module\User\Model\User::findFirst($id);
+            $user = Model\User::findFirst($id);
 
             return ['userName' => $user->name];
         }
