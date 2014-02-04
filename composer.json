@@ -1,9 +1,9 @@
 {
     "name": "ninja/rest",
-    "description": "ninja",
+    "description": "ninja rest",
     "homepage": "http://rest.ninja.kz/",
     "license": "",
-    "version": "0.0",
+    "version": "0.0.1",
     "authors": [
         {
             "name": "Yerlen Zhubangaliyev",
@@ -21,6 +21,12 @@
             "": ["src/"]
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/YerlenZhubangaliyev/ninja-rest"
+        }
+    ],
     "require": {
         "php": ">=5.5.6",
         "ext-phalcon": ">=1.2.4"
