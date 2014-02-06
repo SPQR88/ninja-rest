@@ -28,9 +28,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.6",
-        "ext-phalcon": ">=1.2.4",
-        "predis/predis": "dev-master"
+        "php": ">=5.5.8",
+        "ext-phalcon": ">=1.2.6",
+        "predis/predis": "dev-master",
+        "phalcon/incubator": "v1.2.5"
     },
     "require-dev": {
         "phalcon/devtools": "dev-master"

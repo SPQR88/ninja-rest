@@ -75,7 +75,6 @@ class App
             ->cookie()
             ->session()
             ->logger()
-            ->view()
             ->eventsManger()
             ->routeConfiguration()
             ->router()
