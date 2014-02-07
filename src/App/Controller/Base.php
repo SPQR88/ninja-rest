@@ -44,6 +44,8 @@ namespace App\Controller {
          */
         public function beforeExecuteRoute(\Phalcon\Mvc\Dispatcher $dispatcher)
         {
+            $headers = $this->request->getHeaders();
+
             if ($this->request->isOptions()) {
                 $this->response->setHeader('Access-Control-Allow-Origin', "*");
                 $this->response->setHeader('Access-Control-Allow-Methods', "GET, POST, PUT, DELETE, OPTIONS");
@@ -55,6 +57,12 @@ namespace App\Controller {
             }
 
             $this->response->setHeader('Access-Control-Allow-Origin', "*");
+
+            if (\array_key_exists('RANGE', $headers)) {
+                if (preg_match('/^items\=([0-9]+)\-([0-9]+)$/i', $headers['RANGE'], $rangeMatch)) {
+                    $this->dispatcher->setParam("range", [$rangeMatch[1], $rangeMatch[2]]);
+                }
+            }
 
             $annotations = $this->annotations->getMethod(
                 $dispatcher->getActiveController(),
