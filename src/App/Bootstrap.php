@@ -127,17 +127,31 @@ namespace App {
          */
         protected function initializeDatabase()
         {
-            $di = $this->di;
-            $this->di->set("db", function () use ($di) {
-                $config = $di->getConfiguration()->toArray();
-                if (\array_key_exists('database', $config)) {
-                    $config = $config['database'];
-                    $defaultConnection = $config['defaultConnection'];
-                    $classPath = "\\Phalcon\\Db\\Adapter\\Pdo\\" . $config['connections'][$defaultConnection]['vendor'];
+            $di     = $this->di;
+            $config = $config = $di->getConfiguration()->toArray();
 
-                    return new $classPath($config['connections'][$defaultConnection]['connection']);
+            if (\array_key_exists('database', $config)) {
+                $defaultConnection = $config['database']['defaultConnection'];
+
+                if (\array_key_exists('connections', $config['database'])) {
+
+                    foreach ($config['database']['connections'] as $connectionName => $connectionData) {
+                        $serviceName = "db" . \ucfirst($connectionName);
+                        $vendor      = \ucfirst($connectionData['vendor']);
+                        $options     = $connectionData['connection'];
+
+                        if ($connectionName == $defaultConnection) {
+                            $serviceName = "db";
+                        }
+
+                        $this->di->setShared($serviceName, function () use ($di, $vendor, $options) {
+                            $classPath = "\\Phalcon\\Db\\Adapter\\Pdo\\" . $vendor;
+
+                            return new $classPath($options);
+                        });
+                    }
                 }
-            });
+            }
 
             return $this;
         }
