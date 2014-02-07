@@ -60,7 +60,10 @@ namespace App\Controller {
 
             if (\array_key_exists('RANGE', $headers)) {
                 if (preg_match('/^items\=([0-9]+)\-([0-9]+)$/i', $headers['RANGE'], $rangeMatch)) {
-                    $this->dispatcher->setParam("range", [$rangeMatch[1], $rangeMatch[2]]);
+                    $this->dispatcher->setParam("rangeItems", [
+                        $rangeMatch[1],
+                        $rangeMatch[2]
+                    ]);
                 }
             }
 
