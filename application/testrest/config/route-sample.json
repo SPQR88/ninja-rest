@@ -13,17 +13,17 @@
     },
     "route": {
         "index": {
-            "prefix": "/",
+            "prefix": "",
             "host": "rest.devnet.kz",
             "rules": [
                 {
-                    "rule": "",
+                    "rule": "/",
                     "method": "get",
                     "action": "index",
                     "controller": "index"
                 },
                 {
-                    "rule": ":action/:params",
+                    "rule": "/:action/:params",
                     "method": ["get", "post", "put", "delete", "options"],
                     "action": 1,
                     "controller": "index",
