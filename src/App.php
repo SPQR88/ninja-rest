@@ -195,13 +195,13 @@ class App
                     if (\preg_match($isSimple, $applicationHostname))
                     {
                         if (\preg_match("/^" . \preg_quote($applicationHostname) . "$/", $httpHost)) {
-                            $result->host = $applicationHostname;
+                            $result->host = $httpHost;
                             $result->id   = $applicationId;
                             break;
                         }
                     } else {
                         if (\preg_match("/" . $applicationHostname . "/", $httpHost)) {
-                            $result->host = $applicationHostname;
+                            $result->host = $httpHost;
                             $result->id   = $applicationId;
                             break;
                         }
