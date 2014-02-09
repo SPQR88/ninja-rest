@@ -103,6 +103,5 @@ namespace Module\Item\Model
         {
             $this->sale = $sale;
         }
-
     }
 }

@@ -6,7 +6,7 @@
 namespace Module\Item {
     /**
      * Class Module
-     * @package Module\User
+     * @package Module\Item
      */
     class Module extends \App\Module\Base
     {

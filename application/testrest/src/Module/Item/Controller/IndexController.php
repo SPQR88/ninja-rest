@@ -6,33 +6,35 @@ namespace Module\Item\Controller
 {
     use Module\Item\Model\Item;
 
+    /**
+     * Class IndexController
+     * @package Module\Item\Controller
+     */
     class IndexController extends \App\Controller\Base
     {
+
         /**
-         * @Access("public")
          * @return array
          */
-        public function indexAction()
-        {
-            return ["item"];
-        }
-
         public function itemAction()
         {
-            $id        = $this->request->get('id');
+            $id   = $this->request->get('id');
             $item = [];
 
             if (isset($id)) {
                 $item = Item::findFirst($id)->toArray();
             }
 
-            return json_encode($item);
+            return $item;
         }
 
+        /**
+         * @return array
+         */
         public function itemsAction()
         {
-            $request   = $this->request;
-            $condition = $request->get('condition');
+            $request    = $this->request;
+            $condition  = $request->get('condition');
             $orderField = $request->get('sort_field', null, 'id');
             $orderType  = $request->get('sort_type', null, 'asc');
 
@@ -42,7 +44,7 @@ namespace Module\Item\Controller
                 ])->toArray();
             }
 
-            return json_encode($items);
+            return $items;
         }
     }
 }
