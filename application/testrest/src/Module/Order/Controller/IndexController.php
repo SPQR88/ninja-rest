@@ -11,5 +11,10 @@ namespace Module\Order\Controller
     class IndexController extends \App\Controller\Base
     {
 
+        public function indexAction()
+        {
+            return ['hi shaken, please send me request'];
+        }
+
     }
 }
