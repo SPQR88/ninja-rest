@@ -18,7 +18,7 @@
             "rules": [
                 {
                     "rule": "/",
-                    "method": "get",
+                    "method": ["get", "post", "put", "delete", "options"],
                     "action": "index",
                     "controller": "index"
                 },

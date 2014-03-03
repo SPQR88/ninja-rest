@@ -36,6 +36,23 @@ namespace Module\Index\Controller
 
         }
 
+        public function httpMethodsTest()
+        {
+            if ($this->request->isGet()) {
+                return ['get request'];
+            } elseif ($this->request->isPost()) {
+                return ['post request'];
+            } elseif ($this->request->isPut()) {
+                return ['put request'];
+            } elseif ($this->request->isDelete()) {
+                return ['delete request'];
+            } elseif ($this->request->isOptions()) {
+                return ['options request'];
+            } else {
+                return ['other request'];
+            }
+        }
+
         /**
          * @Access("private")
          */
