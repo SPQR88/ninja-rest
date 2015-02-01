@@ -15,18 +15,17 @@
         "index": {
             "prefix": "",
             "host": "rest.devnet.kz",
+            "controller": "index",
             "rules": [
                 {
                     "rule": "/",
                     "method": ["get", "post", "put", "delete", "options"],
-                    "action": "index",
-                    "controller": "index"
+                    "action": "index"
                 },
                 {
                     "rule": "/:action/:params",
                     "method": ["get", "post", "put", "delete", "options"],
                     "action": 1,
-                    "controller": "index",
                     "params": 2
                 }
             ]
@@ -34,6 +33,7 @@
         "user": {
             "prefix": "/user",
             "host": "rest.devnet.kz",
+            "controller": "user",
             "rules": [
                 {
                     "rule": "",
@@ -45,7 +45,6 @@
                     "rule": "/:action/:params",
                     "method": ["get", "post", "put", "delete", "options"],
                     "action": 1,
-                    "controller": "index",
                     "params": 2
                 }
             ]

@@ -321,76 +321,61 @@ namespace App {
                 }
 
                 $route = $di->getRoute();
-                //$router->setDefaultModule($this->defaultModule);
                 $router->setDefaultController($this->defaultController);
                 $router->setDefaultAction($this->defaultAction);
 
-                if ($route) {
-                    if ($route->count() > 0) {
+                if ($route && $route->count() > 0) {
+                    foreach ($route->toArray()['route'] as $moduleName => $moduleObject) {
+                        $routerGroupOptions = [
+                            'module' => $moduleName,
+                        ];
 
-                        foreach ($route->toArray()['route'] as $moduleName => $moduleObject) {
-                            $routerGroupOptions = [
-                                'module' => $moduleName,
-                            ];
-
-                            if (\array_key_exists('controller', $moduleObject)) {
-                                $routerGroupOptions['controller'] = $moduleObject['controller'];
-                            }
-
-                            $routerGroup = new \Phalcon\Mvc\Router\Group($routerGroupOptions);
-
-                            if ($moduleObject['rules']) {
-                                $routerGroup->setPrefix($moduleObject['prefix']);
-
-                                if (\array_key_exists('host', $moduleObject)) {
-                                    $routerGroup->setHostName($moduleObject['host']);
-                                }
-
-                                foreach ($moduleObject['rules'] as $ruleObject) {
-                                    $routeParams = [];
-                                    $methodNamePrefix = 'add';
-                                    $methodSingle = true;
-
-                                    if (!\is_array($ruleObject['method'])) {
-                                        $methodName = (\strlen($ruleObject['method']) > 0) ? \ucfirst($ruleObject['method']) : "";
-                                        $methodName = $methodNamePrefix . $methodName;
-                                    } else {
-                                        $methodName = $methodNamePrefix;
-                                        $methodSingle = false;
-                                    }
-
-                                    if (\array_key_exists('action', $ruleObject)) {
-                                        $routeParams['action'] = $ruleObject['action'];
-                                    } else {
-                                        $routeParams['action'] = $this->defaultAction;
-                                    }
-
-                                    if (\array_key_exists('controller', $ruleObject)) {
-                                        $routeParams['controller'] = \ucfirst($ruleObject['controller']);
-                                    } else {
-                                        $routeParams['controller'] = \ucfirst($this->defaultController);
-                                    }
-
-                                    if (\array_key_exists('module', $ruleObject)) {
-                                        $routeParams['module'] = $moduleName;
-                                    }
-
-                                    if (\array_key_exists('params', $ruleObject)) {
-                                        $routeParams['params'] = $ruleObject['params'];
-                                    }
-
-                                    if (!$methodSingle) {
-                                        $routerGroup->$methodName($ruleObject['rule'], $routeParams)
-                                            ->via(\App\Util::arrayValuesToUpper($ruleObject['method']));
-
-                                    } else {
-                                        $routerGroup->$methodName($ruleObject['rule'], $routeParams);
-                                    }
-                                }
-                            }
-
-                            $router->mount($routerGroup);
+                        if (\array_key_exists('controller', $moduleObject)) {
+                            $routerGroupOptions['controller'] = $moduleObject['controller'];
                         }
+
+                        $routerGroup = new \Phalcon\Mvc\Router\Group($routerGroupOptions);
+
+                        if ($moduleObject['rules']) {
+                            $routerGroup->setPrefix($moduleObject['prefix']);
+
+                            if (\array_key_exists('host', $moduleObject)) {
+                                $routerGroup->setHostName($moduleObject['host']);
+                            }
+
+                            foreach ($moduleObject['rules'] as $ruleObject) {
+                                $routeParams      = [];
+                                $methodNamePrefix = 'add';
+
+                                if (\array_key_exists('action', $ruleObject)) {
+                                    $routeParams['action'] = $ruleObject['action'];
+                                } else {
+                                    $routeParams['action'] = $this->defaultAction;
+                                }
+
+                                if (\array_key_exists('controller', $ruleObject)) {
+                                    $routeParams['controller'] = \ucfirst($ruleObject['controller']);
+                                }
+
+                                if (\array_key_exists('params', $ruleObject)) {
+                                    $routeParams['params'] = $ruleObject['params'];
+                                }
+
+                                if (\is_array($ruleObject['method'])) {
+                                    $methodName = $methodNamePrefix;
+
+                                    $routerGroup->$methodName($ruleObject['rule'], $routeParams)
+                                        ->via(\App\Util::arrayValuesToUpper($ruleObject['method']));
+                                } else {
+                                    $methodName = (\strlen($ruleObject['method']) > 0) ? \ucfirst($ruleObject['method']) : "";
+                                    $methodName = $methodNamePrefix . $methodName;
+
+                                    $routerGroup->$methodName($ruleObject['rule'], $routeParams);
+                                }
+                            }
+                        }
+
+                        $router->mount($routerGroup);
                     }
                 }
 
